@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/login.css?v=0.1" rel="stylesheet" type="text/css"> 
+        
+        <title>Login</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/User.js"></script>
+        
+    </head>
+    <body onload="onLoad()">
+        <div class="container-fluid">
+            <div id="login-box">
+                <div id="logo">
+                    <img src="assets/img/logo.svg">
+                </div>
+                
+                <div id="form">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="nis" type="text" class="form-control has-error" placeholder="Nomor Induk Siswa Kamu..">
+                    </div>
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="pass" type="password" class="form-control" placeholder="Kata Sandi Kamu..">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" id="submit">Login</button>
+                    </div>
+                    <div class="form-group" id="links">
+                        Tidak punya akun? daftar <a href="register.html">disini</a>
+                    </div>
+                </div>
+             
+                <div class="alert" id="alert">
+                    <ul></ul>
+                </div>
+                
+                <div id="mask">
+                    <img src="assets/img/load-circle.svg">
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+                
+            function whenReady(){
+                document.addEventListener("backbutton", function(){}, false);
+                
+                $("#submit").click(function(){
+                    var nis = $("#nis").val();
+                    var pass = $("#pass").val();
+                    var parent_nis = $("#nis").parent();
+                    var parent_pass = $("#pass").parent();
+                    var error = false;
+                    
+                    $("#alert").removeClass("alert-danger");
+                    $("#alert ul").html("");
+                    $(parent_nis).removeClass("has-error").removeClass("has-success");
+                    $(parent_pass).removeClass("has-error").removeClass("has-success");
+                    
+                    if(nis == ""){
+                        $(parent_nis).addClass("has-error");
+                        $("#alert ul").append("<li><strong>NIS</strong> belum diisi</li>");
+                        error = true;
+                    }
+                    else 
+                        $(parent_nis).addClass("has-success");
+                    
+                    if(pass == ""){
+                        $(parent_pass).addClass("has-error");
+                        $("#alert ul").append("<li><strong>Kata Sandi</strong> belum diisi</li>");
+                        error = true;
+                    }
+                    else
+                        $(parent_pass).addClass("has-success");
+                    
+                    if(nis != "" && pass != "") {
+                        $("#mask").show();
+                        var user = new User();
+                        user.nis = nis;
+                        user.pass = pass;
+                        user.Login().then(
+                            function(e){
+                                $("#mask").hide();
+                                var hasil = JSON.parse(e);
+                                if(hasil[0] == "gagal"){
+                                    $(parent_nis).addClass("has-error").removeClass("has-success");
+                                    $(parent_pass).addClass("has-error").removeClass("has-success");
+                                    $("#alert ul").append("<li><strong>NIS</strong> dan <strong>Kata Sandi</strong> tidak cocok</li>");
+                                    $("#alert").addClass("alert-danger");
+                                }
+                                else if(hasil[0] == "sukses"){
+                                    localStorage.login = true;
+                                    localStorage.nis = hasil[1].nis;
+                                    localStorage.nama = hasil[1].nama;
+                                    localStorage.role = hasil[1].role;
+                                    window.location='index.html';
+                                }
+                            }
+                        );
+                    }  
+                    if(error == true)
+                        $("#alert").addClass("alert-danger");
+                    
+                });
+            }
+            
+            $(document).ready(function(){
+                
+            });
+        </script>
+    </body>
+</html>

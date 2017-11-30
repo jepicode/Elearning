@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/soal-soal.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1" rel="stylesheet">
+        
+        <title>Soal Latihan</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/Clear.js"></script>
+        <script src="js/Soal.js"></script>
+        <script src="js/Ujian.js"></script>
+        
+    </head>
+    <body onload="onLoad()">
+
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="home.html"><img src="assets/img/logo.svg" width="40" height="40"></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" id="info-button"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+                
+        <div class="container">
+            
+            <div id="soal-box">
+                
+                <div id="menu">
+                    <ul>
+                        <li><a href="soal-latihan-satu.html" id="new-button"><span class="glyphicon glyphicon-chevron-right"></span> Mulai Kerjakan Soal Latihan</a></li>
+                        <li><a href="soal-latihan-satu.html" id="cont-button"><span class="glyphicon glyphicon-chevron-right"></span> Lanjutkan Latihan Sebelumnya</a></li>
+                    </ul>
+                </div>
+                
+                <div id="mask"></div>
+                <div id="loading">
+                    <img src="assets/img/load-circle.svg">
+                </div>
+                <div id="modal">
+                    <div id="new">
+                        <b>Konfirmasi</b>
+                        <p>Aplikasi menyimpan pengerjaan soal latihan sebelumnya yang belum selesai, apa anda yakin ingin memulai yang baru?</p>
+                        <div id="modal-link">
+                            <a href="#" id="cancel">Batal</a>
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    <div id="cont">
+                        <b>Pemberitahuan</b>
+                        <p>Aplikasi tidak menemukan data pengerjaan soal latihan sebelumnya.</p>
+                        <div id="modal-link">
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    <div id="info">
+                        <b>Informasi</b>
+                        <p>Pilih Mulai Kerjakan Soal Latihan untuk memulai mengerjakan soal latihan dari awal.<br>Pilih Lanjutkan Latihan Selanjutnya untuk melanjutkan pengerjaan soal latihan sebelumnya (jika ada).</p>
+                        <div id="modal-link">
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){
+                    window.location = 'home.html';
+                }, false);
+                
+
+                var soal = new Soal();
+                var ujian = new Ujian();
+                        
+                if(localStorage.getItem("idUjianLatihan") === null){
+                    ujian.checkLatihan().then(function(e){
+                       var a = JSON.parse(e);
+                       if(a['status'] == "found"){
+                           localStorage.setItem("idUjianLatihan",a["id"]);
+                           localStorage.setItem("soalLatihan",JSON.stringify(a["soal"]));
+                           localStorage.setItem("jumlahSoalLatihan",a['jumsoal']);
+                           localStorage.setItem("jawabanSoalLatihan",JSON.stringify(a['jawaban']));
+                           localStorage.setItem("posisiSoalLatihan","1");
+                        }
+                        
+                        $("#loading").hide();
+                    });
+                }
+                else {
+                    $("#loading").hide();
+                }
+                
+                function initLatihan(){
+                    $("#loading").show();
+                    soal.typeSoal = "latihan";
+                    soal.getSoal().then(function(f){
+                        $("#loading").hide();
+                        localStorage.setItem("soalLatihan",f); // Define soalLatihan
+                        var a = JSON.parse(f);
+                        var b = Object.keys(a).length;
+                        localStorage.setItem("jumlahSoalLatihan",b); // Define Jumlah Soal Latihan berdasarkan Soal Latihan
+                        var c = new Array(b);
+                        var d = JSON.stringify(c);
+                        localStorage.setItem("jawabanSoalLatihan",d); // Define Jawaban kosong sebaganyak Jumlah Soal
+                        localStorage.setItem("posisiSoalLatihan","1"); // Define Posisi Soal Latihan (Untuk Soal Latihan 1);
+                        ujian.initLatihan(f).then(function(g){
+                            localStorage.setItem("idUjianLatihan",g);
+                            window.location = 'soal-latihan-satu.html';
+                        });
+                    });
+                }
+                
+                $("#new-button").click(function(e){
+                    e.preventDefault();
+                    if(localStorage.getItem("idUjianLatihan") === null)
+                        initLatihan();
+                    else {
+                        $("#mask").fadeIn();
+                        $("#modal").fadeIn();
+                        $("#new").show();
+                        $("#cont").hide();
+                        $("#info").hide();
+                    }
+        /*            var link = $(this).attr("href");
+                    if(localStorage.getItem("jawabanSoalLatihan") === null) {
+                        window.location = link;
+                    }
+                    else {
+                        $("#mask").fadeIn();
+                        $("#modal").fadeIn();
+                        $("#new").show();
+                        $("#cont").hide();
+                        $("#info").hide();
+                    } */
+                });
+                
+                $("#cont-button").click(function(e){
+                    e.preventDefault();
+                    var link = $(this).attr("href");
+                    if(localStorage.getItem("idUjianLatihan") === null){
+                        $("#mask").fadeIn();
+                        $("#modal").fadeIn();
+                        $("#new").hide();
+                        $("#cont").show();
+                        $("#info").hide();
+                    }
+                    else {
+                        window.location = link;
+                    }
+                });
+                
+                $("#info-button").click(function(e){
+                    e.preventDefault();
+                    $("#mask").fadeIn();
+                    $("#modal").fadeIn();
+                    $("#new").hide();
+                    $("#cont").hide();
+                    $("#info").show();
+                });
+                
+                $("#new #ok").click(function(){
+                    ujian.idUjian = localStorage.getItem("idUjianLatihan");
+                    $("#loading").show();
+                    ujian.removeLatihan().then(function(){
+                        $("#loading").hide();
+                        initLatihan();
+                    });
+                });
+                
+                $("#new #cancel").click(function(){
+                    $("#mask").fadeOut();
+                    $("#modal").fadeOut();
+                    $("#new").hide();
+                    $("#cont").hide();
+                    $("#info").hide();
+                });
+                
+                $("#cont #ok").click(function(){
+                    $("#mask").fadeOut();
+                    $("#modal").fadeOut();
+                    $("#new").hide();
+                    $("#cont").hide();
+                    $("#info").hide();
+                });
+                
+                $("#info #ok").click(function(){
+                    $("#mask").fadeOut();
+                    $("#modal").fadeOut();
+                    $("#new").hide();
+                    $("#cont").hide();
+                    $("#info").hide();
+                });
+                
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>"); 
+            } 
+            
+            $(document).ready(function(){
+                
+            });
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/home.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1" rel="stylesheet">
+        
+        <title>Home</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/User.js"></script>
+        
+    </head>
+    <body onload="onLoad()">
+
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="home.html"><img src="assets/img/logo.svg" width="40" height="40"></a>
+            </div>
+        </nav>
+                
+        <div class="container">
+            
+            <div id="home-box">
+                
+                <div id="menu">
+                    <div class="rows menu" onclick="window.location='materi.html'">
+                        <div class="col-xs-4 img"><img src="assets/img/men-chest.svg"></div>
+                        <div class="col-xs-8 desc"><h4>Sistem Organ Tubuh</h4></div>
+                    </div>
+                    <div class="rows menu" onclick="window.location='soal-latihan.html'">
+                        <div class="col-xs-4 img"><img src="assets/img/test.svg"></div>
+                        <div class="col-xs-8 desc"><h4>Latihan Soal</h4></div>
+                    </div>
+                    <div class="rows menu" onclick="window.location='soal-ujian.html'">
+                        <div class="col-xs-4 img"><img src="assets/img/exam.svg"></div>
+                        <div class="col-xs-8 desc"><h4>Soal Ujian</h4></div>
+                    </div>
+                    <div class="rows menu" onclick="window.location='hasil.html'">
+                        <div class="col-xs-4 img"><img src="assets/img/hasil.svg"></div>
+                        <div class="col-xs-8 desc"><h4>Hasil Ujian</h4></div>
+                    </div>
+                    <div class="rows menu" onclick="logout();">
+                        <div class="col-xs-4 img"><img src="assets/img/logout.svg"></div>
+                        <div class="col-xs-8 desc"><h4>Keluar Akun</h4></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+                
+            function whenReady(){
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>");
+            }
+            
+            $(document).ready(function(){
+            });
+            
+            function logout(){
+                window.location = 'logout.html';
+            }
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/soal.css?v=0.0.1">
+        
+        <title>Latihan Soal</title>
+        
+        <script src="js/jquery.min.js"></script>
+        
+    </head>
+    <body>
+        <div class="container">
+            <div id="soal-satu-box">
+                <div id="logo">
+                    <img src="assets/img/logo.svg">
+                </div>
+                
+                <div id="soal">
+                    <p id="isi-soal"></p>
+                    <div class="form-group">
+                        <form id="form">
+                            <div class="radio">
+                                <label><input type="radio" name="pilihan" value="a" id="radio-1"><span id="pil-1"></span></label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="pilihan" value="a" id="radio-2"><span id="pil-2"></span></label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="pilihan" value="a" id="radio-3"><span id="pil-3"></span></label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="pilihan" value="a" id="radio-4"><span id="pil-4"></span></label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <ul class="pager">
+                    <li class="previous"><a href="#">Nomor Sebelumnya</a></li>
+                    <li class="next"><a href="#">Nomor Selanjutnya</a></li>
+                </ul>
+                
+                <div style="text-align:center">
+                    <ul class="pagination">
+                        
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="cordova.js"></script>
+        <script>
+            document.addEventListener("deviceready", whenReady, false);
+            
+            function whenReady(){
+                $(document).ready(function(){
+                    if(localStorage.soal == "" || localStorage.soal == false || localStorage.soal == null){
+                        $.ajax({
+                            type:"POST",
+                            url:"http://192.168.43.50/elearning-web/ambil-soal.php",
+                            success:function(e){
+                                if(e){
+                                    localStorage.soal = e;
+                                }
+                            }
+                        });
+
+                        $.ajax({
+                            type:"POST",
+                            url:"http://192.168.43.50/elearning-web/ambil-jumlah-soal.php",
+                            success:function(e){
+                                if(e){
+                                    localStorage.jumSoal = e;
+                                    var data = new Array(e);
+                                    for(i=0; i<e; i++){
+                                        data[i] = "";
+                                    }
+                                    localStorage.jawaban = JSON.stringify(data);
+                                    window.location='soal-satu.html';
+                                }
+                            }
+                        });
+                    }
+                    else{
+
+                        /* Sembunyiin tombol next kalo soalnya terakhir, atau nyembunyiin previous kalo soalnya awal */
+                        if(localStorage.posisiSoal == localStorage.jumSoal)
+                            $(".next").hide();
+                        if(localStorage.posisiSoal == 1)
+                            $(".previous").hide();
+
+                        for(i=1; i<=localStorage.jumSoal; i++){
+                            if(localStorage.posisiSoal == i)
+                                $(".pagination").append("<li class='active'><a href='#' class='paging' data-link='"+i+"'>"+i+"</a></li>");
+                            else
+                                $(".pagination").append("<li><a href='#' class='paging' data-link='"+i+"'>"+i+"</a></li>");
+                        }
+
+
+                        if(localStorage.posisiSoal == "" || localStorage.posisiSoal == false || localStorage.posisiSoal == null) {
+                            localStorage.posisiSoal = 1;
+                            window.location='soal-satu.html';
+                        }
+                        else {
+                            var data = JSON.parse(localStorage.soal);
+                            var posisisoal = parseInt(localStorage.posisiSoal) - 1;
+                            var pilihan = data[posisisoal].pilihan;
+                            var arrpilihan = pilihan.split("|");
+                            $("#isi-soal").html(localStorage.posisiSoal+". "+(data[posisisoal].soal));
+                            for(i = 0; i<4; i++){
+                                var jawab;
+                                if(localStorage.jawaban != null){
+                                    jawab = JSON.parse(localStorage.jawaban);
+                                    if(jawab[posisisoal] == arrpilihan[i])
+                                        jawab = "betul";
+                                }
+                                if(jawab == "betul")
+                                    $("#radio-"+(i+1)).prop("checked", true);
+                                $("#pil-"+(i+1)).html(arrpilihan[i]);
+                                $("#radio-"+(i+1)).attr("value",arrpilihan[i]);
+                            }
+                        }
+                    }
+
+                    $(".next").on("click",function(e){
+                        e.preventDefault();
+                        saveJawaban();
+                        localStorage.posisiSoal = parseInt(localStorage.posisiSoal) + 1;
+                        window.location='soal-satu.html';
+                    });
+
+                    $(".previous").on("click",function(e){
+                        e.preventDefault();
+                        saveJawaban();
+                        localStorage.posisiSoal = parseInt(localStorage.posisiSoal) - 1;
+                        window.location='soal-satu.html';
+                    });
+
+                    $(".paging").on("click",function(e){
+                        e.preventDefault();
+                        saveJawaban();
+                        var link = $(this).attr("data-link");
+                        localStorage.posisiSoal = link;
+                        window.location = 'soal-satu.html';
+                    });
+
+                    function saveJawaban() {
+                        var jawaban = JSON.parse(localStorage.jawaban);
+                        var pil = $('input[name=pilihan]:checked', '#form').val();
+                        var posisisoal = parseInt(localStorage.posisiSoal) - 1;
+                        if(pil != undefined) {
+                            var data = new Array(localStorage.jumSoal);
+                            for(i = 0; i < localStorage.jumSoal; i++){
+                                if(i == posisisoal)
+                                    data[i] = pil;
+                                else
+                                    data[i] = jawaban[i];
+                            }
+                            localStorage.jawaban = JSON.stringify(data);
+                        }
+                    }
+                });
+            }
+                        
+        </script>
+    </body>
+</html>

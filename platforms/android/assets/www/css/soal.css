@@ -1,0 +1,109 @@
+body {
+  background-color: #feee99;
+}
+#soal-satu-box {
+  margin-top: 80px;
+  display: none;
+}
+#soal-satu-box #soal {
+  background-color: rgba(255, 255, 255, 0.5);
+  box-sizing: border-box;
+  padding: 10px;
+  margin: 5px auto;
+  border-radius: 5px;
+  box-shadow: 0 0 3px #000;
+}
+#soal-satu-box .pager li > a {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  color: #000 !important;
+  border: 0 !important;
+  box-shadow: 0 0 3px #000;
+}
+#soal-satu-box .pager li a:active {
+  background-color: #ffffff !important;
+}
+#soal-satu-box .pagination {
+  margin: 0 auto;
+}
+#soal-satu-box .pagination .active > a {
+  color: #fff;
+  background-color: #f37e5f;
+}
+#soal-satu-box .pagination a {
+  color: #000;
+  background: rgba(255, 255, 255, 0.5);
+}
+#soal-satu-box #infoul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#soal-satu-box #mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: none;
+}
+#soal-satu-box #modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  z-index: 10001;
+  margin-left: -150px;
+  width: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: -115px;
+  box-shadow: 0 0 3px #000;
+  display: none;
+}
+#soal-satu-box #modal b {
+  font-size: 22px;
+}
+#soal-satu-box #modal p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+#soal-satu-box #modal #modal-link {
+  text-align: right;
+}
+#soal-satu-box #modal #modal-link a {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+#soal-satu-box #loading {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+#soal-satu-box #loading img {
+  position: fixed;
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  margin-left: -64px;
+  margin-top: -64px;
+}
+#soal-satu-box .wrong {
+  background: rgba(128, 0, 0, 0.8);
+  color: #fff;
+  padding: 5px 0;
+  box-sizing: border-box;
+}
+#soal-satu-box .wrong label {
+  font-weight: bold;
+}
+#soal-satu-box .true {
+  background: rgba(0, 128, 0, 0.8) !important;
+  color: #fff;
+}

@@ -1,0 +1,58 @@
+body {
+  background-color: #feee99;
+  min-height: 100%;
+}
+.container-fluid {
+  position: relative;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+#login-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -125px;
+  margin-top: -201px;
+  width: 250px;
+  height: 402px;
+}
+#login-box #logo {
+  width: 200px;
+  margin: 0 auto;
+}
+#login-box #logo img {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+#login-box #form {
+  width: 250px;
+  margin-top: 20px !important;
+}
+#login-box #submit {
+  width: 250px;
+  background-color: #FBD303;
+  font-weight: bold;
+  cursor: pointer;
+}
+#login-box #links {
+  text-align: center;
+  font-weight: bold;
+}
+#login-box #mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 99;
+  display: none;
+}
+#login-box #mask img {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -64px;
+  margin-left: -64px;
+}

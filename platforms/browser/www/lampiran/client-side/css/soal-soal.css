@@ -1,0 +1,90 @@
+body {
+  background-color: #feee99;
+}
+#soal-box {
+  margin-top: 80px;
+}
+#soal-box #menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 2px solid #000;
+}
+#soal-box #menu ul li {
+  border-bottom: 1px solid #ccc;
+}
+#soal-box #menu ul li a:link,
+#soal-box #menu ul li a:visited {
+  color: #000;
+  font-size: 14px;
+  width: 100%;
+  padding: 15px 10px;
+  box-sizing: border-box;
+  background-image: linear-gradient(to bottom, #fff 0, #f8f8f8 100%);
+  display: inline-block;
+}
+#soal-box #mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: none;
+}
+#soal-box #modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  background: #fff;
+  z-index: 10001;
+  margin-left: -150px;
+  width: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: -115px;
+  box-shadow: 0 0 3px #000;
+  display: none;
+}
+#soal-box #modal b {
+  font-size: 22px;
+}
+#soal-box #modal p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+#soal-box #modal #modal-link {
+  text-align: right;
+}
+#soal-box #modal #modal-link a {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+#soal-box #new {
+  display: none;
+}
+#soal-box #cont {
+  display: none;
+}
+#soal-box #info {
+  display: none;
+}
+#soal-box #loading {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+#soal-box #loading img {
+  position: fixed;
+  z-index: 10001;
+  top: 50%;
+  left: 50%;
+  margin-left: -64px;
+  margin-top: -64px;
+}

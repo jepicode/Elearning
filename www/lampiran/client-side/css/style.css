@@ -1,0 +1,51 @@
+.navbar-collapse.collapse {
+    display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+    float: left !important;
+}
+
+.navbar-nav li a {
+    font-size: 20px;
+}
+.navbar-nav li a:hover, .navbar-nav li a:active {
+    text-decoration: none;
+}
+
+.navbar-nav.navbar-right:last-child {
+    margin-right: -15px !important;
+}
+
+.navbar-right {
+    float: right!important;
+}
+.navbar-brand {
+    position: absolute; width:0px; left: 0; top: 0; right:0; text-align: center; margin: auto;
+}
+.navbar-brand img {
+    position: absolute; left: 50%; margin-left: -20px; top: 7.5px;
+}
+.navbar-toggle {
+    z-index:3;
+}
+
+#side {
+    width: 300px; text-align: center;
+}
+#side #user-icon {
+    width: 100px; height: 100px; background: url("../assets/img/user.svg"); background-size: cover; margin: 20px auto;
+}
+#side #user-nis, #side #user-nama {
+    font-size: 18px;
+}
+#side ul {
+    padding: 0; margin:0; list-style: none; margin: 20px auto;
+}
+#side ul li {
+    
+}
+#side ul li a {
+    display: inline-block; width: 100%; box-sizing: border-box; padding: 10px; border-width: 1px 0; border-style: solid; border-color:#ccc; color: #000;
+}
+#side ul li

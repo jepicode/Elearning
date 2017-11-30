@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/soal.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1" rel="stylesheet">
+        
+        <title>Hasil</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/Soal.js?v=0.1"></script>
+        <script src="js/Clear.js?v=0.1"></script>
+        <script src="js/Ujian.js?v=0.1"></script>
+        
+    </head>
+    <body onload="onLoad()">
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="home.html"><img src="assets/img/logo.svg" width="40" height="40"></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="home.html" id="end-button"><span class="glyphicon glyphicon-home"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div id="soal-satu-box">
+                
+                <div id="latihan">
+                    <h3>Latihan</h3>
+                </div>
+                
+                <div id="ujian">
+                    <h3>Ujian</h3>
+                </div>
+                                
+                <div id="mask"></div>
+                <div id="modal">
+                    <b>Konfirmasi</b>
+                    <p>Anda yakin ingin menyelesaikan pengerjaan soal latihan ini?</p>
+                    <div id="modal-link">
+                        <a href="#" id="cancel">Batal</a>
+                        <a href="#" id="ok">OK</a>
+                    </div>
+                </div>
+                <div id="loading" style="display:block">
+                    <img src="assets/img/load-circle.svg">
+                </div>
+                
+            </div>
+        </div>
+        
+        <style>
+            #soal {
+                margin-bottom: 10px !important;
+            }
+        </style>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){
+                    window.location = 'home.html';
+                }, false);
+                
+                var soal = new Soal();
+                var ujian = new Ujian();
+                
+                ujian.ambilHasil("latihan").then(function(e){
+                    $("#soal-satu-box").show();
+                    var a = JSON.parse(e);
+                    if(a['status'] == "ok"){
+                        var b = Object.keys(a['ujian']).length;
+                        for(i=0; i<b; i++){
+                            var txt = "<div id='soal' class='hasil-latihan' data-id='"+a['ujian'][i].id_ujian+"'><b>Latihan ke-"+(i+1)+"</b><br>Waktu Mulai : "+a['ujian'][i].waktu_mulai+"<br>Waktu Selesai : "+a['ujian'][i].waktu_selesai+"<br>Hasil : "+a['ujian'][i].hasil+"</div>";
+                            $("#latihan").append(txt);
+                        }
+                    }
+                    else {
+                        $("#latihan").append("<div id='soal' class='nope'><b>Belum Pernah Mengerjakan Latihan</b></div>");
+                    }
+                    $("#loading").hide();
+                });
+                
+                ujian.ambilHasil("ujian").then(function(e){
+                    $("#soal-satu-box").show();
+                    var a = JSON.parse(e);
+                    if(a['status'] == "ok"){
+                        var b = Object.keys(a['ujian']).length;
+                        for(i=0; i<b; i++){
+                            var txt = "<div id='soal' class='hasil-ujian' data-id='"+a['ujian'][i].id_ujian+"'><b>Ujian</b><br>Waktu Mulai : "+a['ujian'][i].waktu_mulai+"<br>Waktu Selesai : "+a['ujian'][i].waktu_selesai+"<br>Hasil : "+a['ujian'][i].hasil+"</div>";
+                            $("#ujian").append(txt);
+                        }
+                    }
+                    else {
+                        $("#ujian").append("<div id='soal' class='nope'><b>Belum Pernah Mengerjakan Ujian</b></div>");
+                    }
+                });
+                
+                $("#soal-satu-box").on("click","#soal",function(e){
+                    var c = $(this).attr("class");
+                    if(c != "nope"){
+                        if(c == "hasil-latihan"){
+                            var id = $(this).attr("data-id");
+                            localStorage.setItem("lihatHasilLatihan",id);
+                            window.location = 'lihat-hasil-latihan.html';
+                        }
+                        else {
+                            var id = $(this).attr("data-id");
+                            localStorage.setItem("lihatHasilUjian",id);
+                            window.location = 'lihat-hasil-ujian.html'
+                        }
+                    }
+                });
+
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>");
+            
+            }
+            
+            $(document).ready(function(){
+                
+                
+                
+            });
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>

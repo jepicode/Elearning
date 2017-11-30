@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/register.css?v=0.1" rel="stylesheet" type="text/css"> 
+        
+        <title>Pendaftaran</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/User.js?v=0.1"></script>
+        
+    </head>
+    <body onload="onLoad()">
+        <div class="container-fluid">
+            <div id="register-box">
+                <h2 align="center"><b>Pendaftaran</b></h2>
+                
+                <div id="form">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        <input id="nis" type="text" class="form-control has-error" placeholder="Nomor Induk Siswa Kamu..">
+                    </div>
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        <input id="pass" type="password" class="form-control" placeholder="Kata Sandi Kamu..">
+                    </div>
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-font"></i></span>
+                        <input id="nama" type="text" class="form-control" placeholder="Nama Kamu..">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" id="submit">Register</button>
+                    </div>
+                    <div class="form-group" id="links">
+                        Sudah punya akun? Masuk <a href="login.html">disini</a>
+                    </div>
+                </div>
+             
+                <div class="alert" id="alert">
+                    <ul></ul>
+                </div>
+                
+                <div id="mask">
+                    <img src="assets/img/load-circle.svg">
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){
+                    window.location='login.html';
+                }, false);
+                
+                var user = new User();
+                
+                $("#submit").click(function(){
+                    var nis = $("#nis").val();
+                    var pass = $("#pass").val();
+                    var nama = $("#nama").val();
+                    var parent_nis = $("#nis").parent();
+                    var parent_pass = $("#pass").parent();
+                    var parent_nama = $("#nama").parent();
+                    var error = false;
+                    
+                    $("#alert").removeClass("alert-danger");
+                    $("#alert ul").html("");
+                    $(parent_nis).removeClass("has-error").removeClass("has-success");
+                    $(parent_pass).removeClass("has-error").removeClass("has-success");
+                    $(parent_nama).removeClass("has-error").removeClass("has-success");
+                    
+                    if(nis == ""){
+                        $(parent_nis).addClass("has-error");
+                        $("#alert ul").append("<li><strong>NIS</strong> belum diisi</li>");
+                        error = true;
+                    }
+                    else 
+                        $(parent_nis).addClass("has-success");
+                    
+                    if(pass == ""){
+                        $(parent_pass).addClass("has-error");
+                        $("#alert ul").append("<li><strong>Kata Sandi</strong> belum diisi</li>");
+                        error = true;
+                    }
+                    else
+                        $(parent_pass).addClass("has-success");
+                    
+                    if(nama == ""){
+                        $(parent_nama).addClass("has-error");
+                        $("#alert ul").append("<li><strong>Nama</strong> belum diisi</li>");
+                        error = true;
+                    }
+                    else
+                        $(parent_nama).addClass("has-success");
+                    
+                    if(nis != "" && pass != "" && nama != "") {
+                        $("#mask").show();
+                        user.nama = $("#nama").val();
+                        user.nis = $("#nis").val();
+                        user.pass = $("#pass").val();
+                        user.role = "siswa";
+                        user.Register().then(function(e){
+                            $("#mask").hide();
+                            localStorage.setItem("login",true);
+                            localStorage.setItem("nis",nis);
+                            localStorage.setItem("nama",nama);
+                            localStorage.setItem("role","siswa");
+                            window.location='index.html';
+                        });
+                    } 
+                    
+                    if(error == true)
+                        $("#alert").addClass("alert-danger");
+                });
+            }
+            
+            $(document).ready(function(){
+                
+                
+            });
+        </script>
+    </body>
+</html>

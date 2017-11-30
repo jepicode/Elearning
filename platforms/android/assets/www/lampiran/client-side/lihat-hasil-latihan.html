@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/soal.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1" rel="stylesheet">
+        
+        <title>Hasil Latihan</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/Soal.js?v=0.1"></script>
+        <script src="js/Clear.js?v=0.1"></script>
+        <script src="js/Ujian.js?v=0.1"></script>
+        
+    </head>
+    <body onload="onLoad()">
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="home.html"><img src="assets/img/logo.svg" width="40" height="40"></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="home.html"><span class="glyphicon glyphicon-home"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="container">
+            <div id="soal-satu-box">
+                                         
+                <div id="mask"></div>
+                <div id="modal">
+                    <b>Konfirmasi</b>
+                    <p>Anda yakin ingin menyelesaikan pengerjaan soal latihan ini?</p>
+                    <div id="modal-link">
+                        <a href="#" id="cancel">Batal</a>
+                        <a href="#" id="ok">OK</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <style>
+            #soal{
+                margin: 15px auto !important;
+            }
+        </style>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){
+                    window.location='hasil.html';
+                }, false);
+                
+                var soal = new Soal();
+                var ujian = new Ujian();
+                
+                soal.typeSoal = "latihan";
+                
+                var a;
+                var b;
+                
+                ujian.checkLatihan(localStorage.getItem("lihatHasilLatihan")).then(function(e){
+                    var j = JSON.parse(e);
+                    if(j['status'] == "found"){
+                        localStorage.setItem("idUjianLatihan",j["id"]);
+                        localStorage.setItem("soalLatihan",JSON.stringify(j["soal"]));
+                        localStorage.setItem("jumlahSoalLatihan",j['jumsoal']);
+                        localStorage.setItem("jawabanSoalLatihan",JSON.stringify(j['jawaban']));
+                        soal.getHasil().then(function(e){
+                            a = JSON.parse(e);
+                            b = Object.keys(a).length;
+                            b = b - 2;
+                            getSoal();
+                        });
+                    }
+                });
+                                
+                function getSoal(){
+                    
+                    $("#soal-satu-box").show();
+                                        
+                    var jumSoal = localStorage.getItem("jumlahSoalLatihan");
+                    var jawabanUser = JSON.parse(localStorage.getItem("jawabanSoalLatihan"));
+                    var soalan = JSON.parse(localStorage.getItem("soalLatihan"));
+                    
+                    var info = "<div id='soal'>"+
+                        "<ul id='infoul'><li>Nama : "+localStorage.getItem("nama")+"</li><li>NIS : "+localStorage.getItem("nis")+"</li><li>Benar : "+a.benar+"/"+jumSoal+"</li><li>Nilai : "+a.hasil+"</li></ul>"+
+                        "</div>";
+                    $("#soal-satu-box").append(info);
+                    
+                    for(i=1; i<=jumSoal; i++){
+                        var pilihanSoal = a[i - 1].pilihan.split("|");
+                        var jumPilihan = Object.keys(pilihanSoal).length;
+                        var s = "<div id='soal'>"+
+                            "<p id='isi-soal'>"+i+". "+a[i - 1].soal+"</p>"+
+                            "<form class='form' data-number='"+i+"'>";
+                        
+                        for(j=0; j<jumPilihan; j++){
+                            var classes = "";
+                            if(pilihanSoal[j] == a[i-1].jawaban) {
+                                classes = classes+" wrong";
+                                if(a[i-1].jawabanUser == pilihanSoal[j])
+                                    classes = classes+" true";
+                            }
+                            if(a[i - 1].jawabanUser == pilihanSoal[j])
+                                s = s+"<div class='radio "+classes+"'><label><input type='radio' disabled name='pilihan-"+i+"' value='"+pilihanSoal[j]+"' checked='true'><span>"+pilihanSoal[j]+"</span></label></div>"
+                            else
+                                s = s+"<div class='radio "+classes+"'><label><input type='radio' disabled name='pilihan-"+i+"' value='"+pilihanSoal[j]+"'><span>"+pilihanSoal[j]+"</span></label></div>"
+                        }
+                        
+                        s = s+"</form></div>";
+                        $("#soal-satu-box").append(s);
+                    }
+                    
+                    var c = new ClearMem();
+                    c.clearMem("latihan");
+                    
+                };
+                
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>");
+                                
+            }
+            
+            $(document).ready(function(){
+                
+//                console.log(localStorage.getItem("lihatHasilLatihan"));
+                
+            });
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>

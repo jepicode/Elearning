@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/home.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1" rel="stylesheet">
+        
+        <title>Materi</title>
+        
+        <script src="js/jquery.min.js"></script>
+        
+    </head>
+    <body onload="onLoad()">
+
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="home.html"><img src="assets/img/logo.svg" width="40" height="40"></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="home.html"><span class="glyphicon glyphicon-home"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+                
+        <div class="container">
+            
+            <div id="home-box">
+                
+                <div id="menu">
+                    <div id="image" style="width:150px; height:150px; margin:0 auto; border-radius:50%; background:url(assets/img/tentang.jpeg) center center no-repeat; background-size:cover"></div>
+                    <div class="rows menu materi">
+                        <h3 align='center'><b>Aplikasi E-Learning Sistem Organ Tubuh Manusia di Android Berbasis Hybrid</b></h3>
+                        
+                        <br><center>Dibuat oleh : <br><b>Widya Yunita Nirmala</b></center><br>
+                        
+                        <h4 align='center'><b>Seorang Mahasiswi<br>Universitas Gunadarma <br>Jurusan Sistem Informasi Angkatan 2014</b></h4>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){
+                    window.location = 'home.html';
+                }, false);
+                
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>");
+            }
+            
+            $(document).ready(function(){
+            });
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>

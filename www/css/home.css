@@ -1,0 +1,207 @@
+body {
+  background-color: #feee99;
+}
+#home-box {
+  margin-top: 80px;
+}
+#home-box #logo {
+  width: 75px;
+  margin: 10px auto;
+}
+#home-box #logo img {
+  width: 75px;
+  height: 75px;
+  margin: 0 auto;
+}
+#home-box #menu {
+  width: 100%;
+  box-sizing: border-box;
+}
+#home-box #menu .materi {
+  padding: 10px;
+}
+#home-box #menu .menu {
+  margin: 10px 5px;
+  width: calc(100% - 10px);
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  box-shadow: 0 0 3px #000;
+}
+#home-box #menu .menu .img {
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#home-box #menu .menu .img img {
+  width: 75px;
+  height: 75px;
+}
+#home-box #menu .menu .desc {
+  text-align: left;
+  padding: 10px;
+  box-sizing: border-box;
+  height: 97px;
+}
+#home-box #menu .menu .desc h4 {
+  font-weight: bold;
+  margin-top: 29px;
+}
+#home-box #menu #sistem-pernafasan-org {
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+#home-box #menu #sistem-pernafasan-org img {
+  margin: 0 auto;
+}
+#home-box #menu #sistem-pernafasan-org a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 14px;
+  font-weight: bold;
+}
+#home-box #menu #sistem-pernafasan-org #satu {
+  margin-top: -70px;
+  margin-left: -115px;
+}
+#home-box #menu #sistem-pernafasan-org #dua {
+  margin-top: -33px;
+  margin-left: -100px;
+}
+#home-box #menu #sistem-pernafasan-org #tiga {
+  margin-top: -15px;
+  margin-left: -120px;
+}
+#home-box #menu #sistem-pernafasan-org #empat {
+  margin-top: 42px;
+  margin-left: -145px;
+}
+#home-box #menu #sistem-pernafasan-org #lima {
+  margin-top: 71px;
+  margin-left: -155px;
+}
+#home-box #menu #sistem-pernafasan-org #enam {
+  margin-top: 112px;
+  margin-left: -155px;
+}
+#home-box #menu #sistem-pernafasan-org #tujuh {
+  margin-top: -125px;
+  margin-left: 65px;
+}
+#home-box #menu #sistem-pernafasan-org #delapan {
+  margin-top: -85px;
+  margin-left: 60px;
+}
+#home-box #menu #sistem-pernafasan-org #sembilan {
+  margin-top: -45px;
+  margin-left: 65px;
+}
+#home-box #menu #sistem-pernafasan-org #sepuluh {
+  margin-top: -20px;
+  margin-left: 80px;
+}
+#home-box #menu #sistem-pernafasan-org #sebelas {
+  margin-top: 125px;
+  margin-left: -40px;
+}
+#home-box #menu #sistem-pernafasan-organ {
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+#home-box #menu #sistem-pernafasan-organ img {
+  margin: 0 auto;
+}
+#home-box #menu #sistem-pernafasan-organ a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 14px;
+  font-weight: bold;
+}
+#home-box #menu #sistem-pernafasan-organ #satu {
+  margin-top: -43px;
+  margin-left: -150px;
+}
+#home-box #menu #sistem-pernafasan-organ #dua {
+  margin-top: 83px;
+  margin-left: -150px;
+}
+#home-box #menu #sistem-pernafasan-organ #tiga {
+  margin-top: -85px;
+  margin-left: 40px;
+}
+#home-box #menu #sistem-pencernaan {
+  text-align: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+#home-box #menu #sistem-pencernaan img {
+  margin: 0 auto;
+}
+#home-box #menu #sistem-pencernaan a {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 14px;
+  font-weight: bold;
+}
+#home-box #menu #sistem-pencernaan #satu {
+  margin-top: -103px;
+  margin-left: -155px;
+}
+#home-box #menu #sistem-pencernaan #dua {
+  margin-top: -15px;
+  margin-left: -90px;
+}
+#home-box #menu #sistem-pencernaan #tiga {
+  margin-top: 50px;
+  margin-left: -138px;
+}
+#home-box #menu #sistem-pencernaan #empat {
+  margin-top: -100px;
+  margin-left: 48px;
+}
+#home-box #menu #sistem-pencernaan #lima {
+  margin-top: -60px;
+  margin-left: 45px;
+}
+#home-box #menu #sistem-pencernaan #enam {
+  margin-top: 0px;
+  margin-left: 55px;
+}
+#home-box #menu #sistem-pencernaan #tujuh {
+  margin-top: 15px;
+  margin-left: 55px;
+}
+#home-box #menu #sistem-pencernaan #delapan {
+  margin-top: 45px;
+  margin-left: 55px;
+}
+#home-box #menu #sistem-pencernaan #sembilan {
+  margin-top: 95px;
+  margin-left: 55px;
+}
+#home-box #floating-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0 0 3px #000;
+  display: none;
+}
+#home-box #floating-button a:link,
+#home-box #floating-button a:visited {
+  color: #000 !important;
+  font-weight: bold;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 2.8em;
+}

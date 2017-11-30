@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/splashscreen.css?v=01" rel="stylesheet" type="text/css"> 
+        
+        <title>Logout</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/Ujian.js?v=0.1"></script>
+        <script src="js/Clear.js?v=0.1"></script>
+        
+    </head>
+    <body onload="onLoad()">
+        <div class="container-fluid">
+            <img id="logo" src="assets/img/logo.svg">
+            <img id="loading" src="assets/img/loading.svg?v=1">
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                document.addEventListener("backbutton", function(){}, false);
+                
+                var ujian = new Ujian();
+                var clear = new ClearMem();
+                
+                if(localStorage.getItem("idUjianLatihan") !== null){
+                    ujian.saveToDatabase("latihan","yes").then(function(e){
+                        if(localStorage.getItem("idUjian") !== null){
+                            ujian.saveToDatabase("ujian").then(function(){
+                                clear.clearAll();
+                                window.location = 'login.html';
+                            });
+                        }
+                        else {
+                            clear.clearAll();
+                            window.location = 'login.html';
+                        }
+                    });
+                }
+                else {
+                    if(localStorage.getItem("idUjian","yes") !== null){
+                        ujian.saveToDatabase("ujian").then(function(){
+                            clear.clearAll();
+                            window.location = 'login.html';
+                        });
+                    }
+                    else {
+                        clear.clearAll();
+                        window.location = 'login.html';
+                    }
+                }
+            }
+            
+        </script>
+    </body>
+</html>

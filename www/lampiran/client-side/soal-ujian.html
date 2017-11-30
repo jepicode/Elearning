@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link href="css/soal-soal.css?v=0.1" rel="stylesheet" type="text/css"> 
+        <link href="css/sidebarjs.css" rel="stylesheet" type="text/css">
+        <link href="css/style.css?v=0.1>" rel="stylesheet">
+        
+        <title>Soal Latihan</title>
+        
+        <script src="js/jquery.min.js"></script>
+        <script src="js/less.min.js"></script>
+        <script src="js/Clear.js?v=0.1"></script>
+        <script src="js/Soal.js?v=0.1"></script>
+        <script src="js/Ujian.js?v=0.1"></script>
+        <script src="js/jquery.countdown.min.js"></script>
+        
+    </head>
+    <body onload="onLoad()">
+
+        <div sidebarjs>
+            <div id="side">
+                <div id="user-icon">
+                </div>
+                
+                <div id="user-nis"></div>
+                <div id="user-nama"></div>
+                
+                <ul>
+                    <li><a href="tentang.html">Tentang Aplikasi</a></li>
+                    <li><a href="logout.html" style="border-top:0px !important">Keluar</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <nav class="navbar navbar-default navbar-fixed-top" >
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-left">
+                    <li id="hamburger" sidebarjs-toggle><a href="#"><span class="glyphicon glyphicon-menu-hamburger"></span></a></li>
+                </ul>
+                <a class="navbar-brand" href="#"><img src="assets/img/logo.svg" width="40" height="40"></a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" id="info-button"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+                </ul>
+            </div>
+        </nav>
+                
+        <div class="container">
+            
+            <div id="soal-box">
+                
+                <div id="ujian-box">
+                    <div class="row soal">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align:right">Nama</div>
+                        <div class="col-xs-6 col-sm-6 col-md-6" id="nama"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align:right">NIS</div>
+                        <div class="col-xs-6 col-sm-6 col-md-6" id="nis"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align:right">Jumlah Soal</div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">20 Soal</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align:right">Waktu Pengerjaan</div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">120 Menit</div>
+                    </div>
+                    <br>
+                    <div style="text-align:center">
+                        <a href="soal-ujian-satu.html" id="start" class="btn btn-default">Mulai Ujian</a>
+                    </div>
+                </div>
+                
+                <div id="mask"></div>
+                <div id="modal">
+                    <div id="new">
+                        <b>Konfirmasi</b>
+                        <p>Aplikasi menyimpan pengerjaan soal latihan sebelumnya yang belum selesai, apa anda yakin ingin memulai yang baru?</p>
+                        <div id="modal-link">
+                            <a href="#" id="cancel">Batal</a>
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    <div id="cont">
+                        <b>Pemberitahuan</b>
+                        <p>Aplikasi tidak menemukan data pengerjaan soal latihan sebelumnya.</p>
+                        <div id="modal-link">
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    <div id="info">
+                        <b>Informasi</b>
+                        <p>Pilih Mulai Kerjakan Soal Latihan untuk memulai mengerjakan soal latihan dari awal.<br>Pilih Lanjutkan Latihan Selanjutnya untuk melanjutkan pengerjaan soal latihan sebelumnya (jika ada).</p>
+                        <div id="modal-link">
+                            <a href="#" id="ok">OK</a>
+                        </div>
+                    </div>
+                    
+                    <div id="clock"></div>
+                    
+                </div>
+                
+                <div id="loading">
+                    <img src="assets/img/load-circle.svg">
+                </div>
+                
+            </div>
+        </div>
+        
+        <script src="cordova.js"></script>
+        <script>
+            function onLoad(){
+                document.addEventListener("deviceready", whenReady, false);
+            }
+            
+            function whenReady(){
+                var soal = new Soal();
+                var ujian = new Ujian();
+                
+                soal.typeSoal = "ujian";
+
+                $("#nama").html(localStorage.getItem("nama")).css("textTransform","capitalize");
+                $("#nis").html(localStorage.getItem("nis"));
+                
+                if(localStorage.getItem("idUjian") === null){
+                    $("#loading").show();
+                    ujian.checkUjian().then(function(e){
+                        $("#loading").hide();
+                        var a = JSON.parse(e);
+                        if(a['status'] == "found"){
+                            localStorage.setItem("idUjian",a['id']);
+                            localStorage.setItem("soalUjian",JSON.stringify(a['soal']));
+                            localStorage.setItem("jawabanSoalUjian",JSON.stringify(a['jawaban']));
+                            localStorage.setItem("posisiSoalUjian","1");
+                            localStorage.setItem("waktuSelesai",a['waktu']);
+                            window.location='soal-ujian-satu.html';
+                        }
+                        else if(a['status'] == "done"){
+                            $("#ujian-box").html("<h2 align='center'>Anda Telah Menyelesaikan Soal Ujian</h2><br><center><a id='lihat' href='#' class='btn btn-default' data-id='"+a['id']+"'>Lihat Hasil</a></center>");
+                        }
+                        else {
+                            
+                        }
+                    });
+                    
+                }
+                else {
+                    $("#loading").show();
+                    ujian.checkUjian(localStorage.getItem("idUjian")).then(function(e){
+                        $("#loading").hide();
+                        var a = JSON.parse(e);
+                        if(a['waktu_selesai'] == "00-00-00 00:00:00"){
+                            $("#clock").countdown(localStorage.getItem("waktuSelesai")).on("finish.countdown", function(){
+                                alert("Waktu anda sudah habis");
+                                $("#loading").show();
+                                ujian.saveToDatabase("ujian").then(function(e){
+                                    $("#loading").hide();
+                                    var c = new ClearMem();
+                                    var id = localStorage.getItem("idUjian");
+                                    c.clearMem("ujian");
+                                    localStorage.setItem("lihatHasilUjian",id);
+                                    window.location = "lihat-hasil-ujian.html";
+                                });
+                            }).on("update.countdown",function(){
+                                window.location = 'soal-ujian-satu.html';
+                            });
+                        }
+                        else {
+                            $("#ujian-box").html("<h2 align='center'>Anda Telah Menyelesaikan Soal Ujian</h2><br><center><a id='lihat' href='#' class='btn btn-default' data-id='"+a['id']+"'>Lihat Hasil</a></center>");
+                        }
+                    });
+                }
+                
+                $("#ujian-box").on("click","#lihat", function(e){
+                    e.preventDefault();
+                    var id = $("#lihat").attr("data-id");
+                    localStorage.setItem("lihatHasilUjian",id);
+                    window.location='lihat-hasil-ujian.html';
+                });
+                
+                
+                $("#start").click(function(e){
+                    e.preventDefault();
+                    $("#loading").show();
+                    soal.getSoal().then(function(f){
+                        var a = JSON.parse(f);
+                        var b = Object.keys(a).length;
+                        localStorage.setItem("soalUjian",f);
+                        localStorage.setItem("jumlahSoalUjian",b);
+                        var c = new Array(b);
+                        localStorage.setItem("jawabanSoalUjian",JSON.stringify(c));
+                        localStorage.setItem("posisiSoalUjian","1");
+                        ujian.initUjian(f).then(function(g){
+                            $("#loading").hide();
+                            var h = JSON.parse(g);
+                            localStorage.setItem("idUjian",h['id']);
+                            localStorage.setItem("waktuSelesai",h['waktu_selesai']);
+                            window.location='soal-ujian-satu.html';
+                        });
+                        
+                    });
+                });
+
+                $("#user-nis").html("<b>"+localStorage.getItem("nis")+"</b>");
+                $("#user-nama").html("<b>"+localStorage.getItem("nama")+"</b>");
+            }
+            
+            $(document).ready(function(){
+                
+            });
+        </script>
+        
+        <script src="js/sidebarjs.js"></script>
+        <script>
+            var sidebarjs = new SidebarJS()
+        </script>
+    </body>
+</html>
